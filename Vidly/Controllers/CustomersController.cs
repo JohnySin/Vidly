@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,28 +10,36 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        // GET: Customers
-        public ActionResult CustomersList()
+        private ApplicationDbContext _context;
+
+        public CustomersController()
         {
-            var customers = GetCustomers();
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        public ActionResult Index()
+        {
+            // This "Include" method goes with "using System.Data.Entity".
+            // By default Entity Framework ONLY loads the customer objects, NOT their related objects.
+            // So we need to inlude manually the related objects...that's what "Include" does. This is called "Eager Loading"
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
             return View(customers);
         }
 
         public ActionResult Details(int id)
         {
-            var customer = GetCustomers().Where(c => c.Id == id).SingleOrDefault();
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+
+            if (null == customer)
+                return HttpNotFound();
 
             return View(customer);
-        }
-
-        private IEnumerable<Customer> GetCustomers()
-        {
-            return new List<Customer>
-            {
-                new Customer { Id = 1, Name = "John Smith" },
-                new Customer { Id = 2, Name = "Mary Williams" }
-            };
         }
     }
 }

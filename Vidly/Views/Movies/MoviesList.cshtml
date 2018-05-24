@@ -17,7 +17,7 @@ else
 <ul>
     @foreach (var movie in Model)
     {
-        <li style="width: 25%;">@Html.ActionLink(movie.Name, "Details/" + movie.Id, "Movies", new { @class = "nav-link" })</li>
+        <li style="width: 25%;">@Html.ActionLink(movie.Name, "Details", "Movies", new { id = movie.Id}, new { @class = "nav-link" })</li>
     }
 </ul>
 

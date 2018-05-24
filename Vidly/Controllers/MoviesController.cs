@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
@@ -10,7 +11,36 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
-        // GET: Movies/Random
+        // Step 1
+        private ApplicationDbContext _context;
+
+        // Step 2
+        public MoviesController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        // Step 3
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        public ActionResult Index()
+        {
+            var moviesList = _context.Movies.Include(g => g.Genre).ToList();
+
+            return View(moviesList);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var movie = _context.Movies.Include(g => g.Genre).SingleOrDefault(m => m.Id == id);
+
+            return View(movie);
+        }
+
+
         public ActionResult Random()
         {
             var movie = new Movie() { Name = "Shrek!" };
@@ -32,31 +62,6 @@ namespace Vidly.Controllers
 
             return View(viewModel);
         }
-
-        public ActionResult MoviesList()
-        {
-            var moviesList = GetMovies();
-
-            return View(moviesList);
-        }
-
-        public ActionResult Details(int id)
-        {
-            var movie = GetMovies().Where(m => m.Id == id).SingleOrDefault();
-
-            return View(movie);
-        }
-
-        private IEnumerable<Movie> GetMovies()
-        {
-            return new List<Movie>
-            {
-                new Movie { Id = 1, Name = "Shrek" },
-                new Movie { Id = 2, Name = "Matrix" },
-                new Movie { Id = 3, Name = "Pirates of the caribbean" }
-            };
-        }
-
 
         /*
          * This is a custom route - The recomended way of routing
