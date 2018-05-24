@@ -1,0 +1,28 @@
+﻿
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+    <div class="container">
+        <div class="navbar-brand">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Vi-DLY", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "font-size: 25px" })
+        </div>
+        <br />
+        <div id="navbarResponsive" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li>@Html.ActionLink("Customers", "CustomersList", "Customers", routeValues: new { @Href = "Customers/CustomersList" }, htmlAttributes: new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("Movies", "MoviesList", "Movies", routeValues: new { @Href = "Movies/MoviesList" }, htmlAttributes: new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home", routeValues: new { @Href = "Home/Contact" }, htmlAttributes: new { @class = "nav-link" })</li>
+            </ul>
+        </div>
+
+        <br />
+        <div>
+            @Html.Partial("_LoginPartial")
+        </div>
+
+    </div>
+</div>
