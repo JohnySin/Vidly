@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -40,6 +41,63 @@ namespace Vidly.Controllers
                 return HttpNotFound();
 
             return View(customer);
+        }
+
+        public ActionResult New()
+        {
+            //var membershipTypes = _context.MembershipTypes.ToList();
+
+            var viewModel = new CustomerFormViewModel()
+            {
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Customer Customer)
+        {
+            if (Customer.Id == 0)
+            {
+                _context.Customers.Add(Customer);
+            }
+            else
+            {
+                var customerInDb = _context.Customers.Single(c => c.Id == Customer.Id);
+
+                // This works but it is not the best method. Opens security holes.
+                // TryUpdateModel(customerInDb);
+
+                // This is a better method...classic method actually :D
+                customerInDb.Name = Customer.Name;
+                customerInDb.BirthDate = Customer.BirthDate;
+                customerInDb.MembershipTypeId = Customer.MembershipTypeId;
+                customerInDb.IsSubscribedToNewsletter = Customer.IsSubscribedToNewsletter;
+
+                // To avoid the above lines use AutoMapper tool..it goes like this:
+                // Mapper.Map(customer, customerInDb);
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Customers");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == Id);
+
+            if (null == customer)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel()
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
         }
     }
 }

@@ -1,0 +1,45 @@
+﻿
+@model Vidly.ViewModels.CustomerFormViewModel
+
+@{
+    ViewBag.Title = "Customer Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>New Customer</h3>
+<br />
+
+@using (@Html.BeginForm("Save", "Customers"))
+{
+    <div class="form-group">
+        @*
+            Better than simple HTML because handles validation.
+            In simple HTML must be done manually.
+        *@
+        @Html.LabelFor(m => m.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.BirthDate)
+        @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:dd / MM / yyyy}", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+    </div>
+
+    <div class="checkbox" style="margin-top: 3%;">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter, new { @class = "is-subscribed-checkbox" })
+            <text style="margin-left: 15px">Subscribed to Newsletters?</text>
+        </label>
+    </div>
+    @Html.HiddenFor(m => m.Customer.Id);
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <br />
+}
