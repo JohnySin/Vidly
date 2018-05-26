@@ -5,7 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>New Movie</h3>
+@if (null ==  Model.Movie)
+{
+    <h3>New Movie</h3>
+}
+else
+{
+    <h3>Edit Movie</h3>
+}
+
 <br />
 
 @using (@Html.BeginForm("Save", "Movies"))
@@ -30,10 +38,10 @@
         @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
     </div>
 
-    @Html.HiddenFor(m => m.Movie.Genre.Id);
-    @Html.HiddenFor(m => m.Movie.Genre.Name);
-    @Html.HiddenFor(m => m.Movie.Name);
-    @Html.HiddenFor(m => m.Movie.GenreId);
+    @*@Html.HiddenFor(m => m.Movie.Genre.Id);
+        @Html.HiddenFor(m => m.Movie.Genre.Name);
+        @Html.HiddenFor(m => m.Movie.Name);
+        @Html.HiddenFor(m => m.Movie.GenreId);*@
     @Html.HiddenFor(m => m.Movie.Id);
 
     <br />

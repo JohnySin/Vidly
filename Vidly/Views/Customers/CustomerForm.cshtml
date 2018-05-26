@@ -6,7 +6,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>New Customer</h3>
+@if (null == Model.Customer)
+{
+    <h3>New Customer</h3>
+}
+else
+{
+    <h3>Edit Customer</h3>
+}
+
 <br />
 
 @using (@Html.BeginForm("Save", "Customers"))
@@ -40,6 +48,4 @@
     <br />
 
     <button type="submit" class="btn btn-primary">Save</button>
-
-    <br />
 }

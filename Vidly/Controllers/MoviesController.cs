@@ -56,6 +56,7 @@ namespace Vidly.Controllers
         {
             if (Movie.Id == 0)
             {
+                Movie.DateAdded = DateTime.Now;
                 _context.Movies.Add(Movie);
             }
             else
@@ -68,15 +69,7 @@ namespace Vidly.Controllers
                 movieInDb.NumberInStock = Movie.NumberInStock;
             }
 
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-           
+            _context.SaveChanges();
 
             return RedirectToAction("Index", "Movies");
         }
