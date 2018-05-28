@@ -6,19 +6,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (null == Model.Customer)
+@if (null != Model.Customer && Model.Customer.Id != 0)
 {
-    <h3>New Customer</h3>
+    <h3>Edit Customer</h3>
 }
 else
 {
-    <h3>Edit Customer</h3>
+    <h3>New Customer</h3>
 }
 
 <br />
 
 @using (@Html.BeginForm("Save", "Customers"))
 {
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+
     <div class="form-group">
         @*
             Better than simple HTML because handles validation.
@@ -26,26 +28,37 @@ else
         *@
         @Html.LabelFor(m => m.Customer.Name)
         @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.BirthDate)
-        @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:dd / MM / yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.Name)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.MembershipTypeId)
         @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)
     </div>
 
-    <div class="checkbox" style="margin-top: 3%;">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.BirthDate)
+        @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:dd / MM / yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.BirthDate)
+    </div>
+
+    <div class="checkbox" style="margin-top: 2%;">
         <label>
             @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter, new { @class = "is-subscribed-checkbox" })
             <text style="margin-left: 15px">Subscribed to Newsletters?</text>
         </label>
     </div>
+    
     @Html.HiddenFor(m => m.Customer.Id);
+    @Html.AntiForgeryToken();
+    
     <br />
 
     <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@* Front-end validation *@
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
 }

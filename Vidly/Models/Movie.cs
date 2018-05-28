@@ -16,14 +16,18 @@ namespace Vidly.Models
 
         public Genre Genre { get; set; }
 
-        [Display(Name = "Genre")]
-        [Required]
+        [Display (Name = "Genre")]
         public byte GenreId { get; set; }
 
         public DateTime DateAdded { get; set; }
 
+        [Required]
+        [Display (Name = "Date Released")]
         public DateTime DateReleased { get; set; }
 
+        [Required]
+        [Display (Name = "Number In Stock")]
+        [Range(1, 20, ErrorMessage = "The field {0} must be between {1} and {2}.")]
         public byte NumberInStock { get; set; }
     }
 }

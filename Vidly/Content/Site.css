@@ -22,3 +22,20 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.is-subscribed-checkbox {
+    width: 13px;
+}
+
+.field-validation-error {
+    color: red;
+    font-size: small;
+}
+
+.input-validation-error {
+    border: 1px solid red;
+}
+
+.validation-summary-errors {
+    color: red;
+}
