@@ -1,13 +1,14 @@
 ﻿
 @model IEnumerable<Vidly.Models.Customer>
+
 @{
     ViewBag.Title = "CustomersList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Customers</h2>
-
 <br />
+
 @Html.ActionLink("Add Customer", "New", "Customers", new { @class = "btn btn-primary" })
 <br />
 <br />
